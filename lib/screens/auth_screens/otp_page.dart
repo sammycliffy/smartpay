@@ -113,7 +113,9 @@ class _OTPPageState extends State<OTPPage> {
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium
-                              ?.copyWith(fontWeight: FontWeight.w700),
+                              ?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.textGrey1),
                         ),
                       ),
                       heightSpace(67),

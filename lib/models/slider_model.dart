@@ -15,12 +15,12 @@ List<SliderModel> getSlides() {
     SliderModel(
         title: "Finance app the safest \n and most trusted",
         description:
-            "Your finance work starts here. our here to help you track and deal with speeding up your transactions",
+            "Your finance work starts here. Our here to help \n you track and deal with speeding up your\n transactions",
         image: AppImages.mobilePhone),
     SliderModel(
-        title: "The fastest transaction process only here",
+        title: "The fastest transaction \n process only here",
         description:
-            "Get easy to pay your bills with just a few steps. Paying your bills become fast and efficient",
+            "Get easy to pay your bills with just a few \n steps. Paying your bills become fast and \n efficient",
         image: AppImages.mobilePhone1)
   ];
 
