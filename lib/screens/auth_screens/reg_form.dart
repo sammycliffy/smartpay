@@ -176,7 +176,7 @@ class _RegFormScreenState extends State<RegFormScreen> {
                           },
                           isActive:
                               countryName != null && isValidated ? true : false,
-                          text: "Sign In",
+                          text: "Continue",
                         ),
                         heightSpace(42.5),
                       ]),
