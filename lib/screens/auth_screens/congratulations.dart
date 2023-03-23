@@ -1,15 +1,38 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smart_pay/app/locator.dart';
+import 'package:smart_pay/app_services/local_storage_service.dart';
 import 'package:smart_pay/constants/image_assets.dart';
 import 'package:smart_pay/constants/routes.dart';
 import 'package:smart_pay/constants/spaces.dart';
 import 'package:smart_pay/screens/widgets/custom_button.dart';
 
-class Congratulations extends StatelessWidget {
+import '../../constants/keys.dart';
+import '../../models/user_model.dart';
+
+class Congratulations extends StatefulWidget {
   Congratulations({super.key});
+
+  @override
+  State<Congratulations> createState() => _CongratulationsState();
+}
+
+class _CongratulationsState extends State<Congratulations> {
   final _router = locator<GoRouter>();
+  final localStorage = locator<LocalStorageService>();
+  late UserModel userModel;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      userModel = UserModel.fromJson(
+          json.decode(localStorage.getDataFromDisk(Keys.userData)));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +48,7 @@ class Congratulations extends StatelessWidget {
         ),
         heightSpace(32),
         Text(
-          "Congratulations, James",
+          "Congratulations, ${userModel.user!.fullName}",
           style: Theme.of(context).textTheme.displayLarge,
         ),
         heightSpace(20),

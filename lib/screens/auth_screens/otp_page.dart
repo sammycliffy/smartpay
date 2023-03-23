@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:smart_pay/api/auth_services.dart';
 import 'package:smart_pay/app/locator.dart';
 import 'package:smart_pay/constants/colors.dart';
-import 'package:smart_pay/constants/image_assets.dart';
+
 import 'package:smart_pay/constants/routes.dart';
 import 'package:smart_pay/constants/spaces.dart';
 import 'package:smart_pay/screens/widgets/arrow_back_container.dart';
@@ -12,8 +12,6 @@ import 'package:pinput/pinput.dart';
 import 'package:smart_pay/screens/widgets/loader.dart';
 import 'package:smart_pay/screens/widgets/timer.dart';
 import '../widgets/custom_button.dart';
-import '../widgets/other_signin.dart';
-import '../widgets/text_form_field.dart';
 
 class OTPPage extends StatefulWidget {
   final String email;
@@ -28,7 +26,7 @@ class _OTPPageState extends State<OTPPage> {
   bool isLoading = false;
   final _pinController = TextEditingController();
   bool isValidated = false;
-  GlobalKey<OTPTimerState> timerkey = GlobalKey();
+
   final AuthService _authService = AuthService();
 
   @override
@@ -109,11 +107,6 @@ class _OTPPageState extends State<OTPPage> {
                         ),
                       ),
                       heightSpace(32),
-                      OTPTimer(
-                        time: 30,
-                        key: timerkey,
-                        timeColor: AppColors.primary,
-                      ),
                       Center(
                         child: Text(
                           "Resend Code in 30 secs",

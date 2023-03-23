@@ -36,6 +36,7 @@ class _SmartPayTextFormFieldState extends State<SmartPayTextFormField> {
       validator: widget.validator,
       decoration: InputDecoration(
         hintText: widget.hintText,
+        hintStyle: Theme.of(context).textTheme.displayMedium,
         suffixIcon: widget.isPassword
             ? GestureDetector(
                 onTap: () {

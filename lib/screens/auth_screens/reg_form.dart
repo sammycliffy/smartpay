@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smart_pay/api/auth_services.dart';
 import 'package:smart_pay/app/locator.dart';
 import 'package:smart_pay/constants/colors.dart';
+import 'package:smart_pay/constants/image_assets.dart';
 import 'package:smart_pay/constants/routes.dart';
 import 'package:smart_pay/constants/spaces.dart';
 import 'package:smart_pay/helpers/form_helper.dart';
@@ -30,12 +34,14 @@ class _RegFormScreenState extends State<RegFormScreen> {
   final _country = TextEditingController();
   bool isValidated = false;
   String countryImage = "";
-  String countryName = "";
+  String? countryName;
+  String? countryCode;
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    log(countryName.toString());
     return Scaffold(
       backgroundColor: Colors.white,
       body: isLoading
@@ -47,8 +53,11 @@ class _RegFormScreenState extends State<RegFormScreen> {
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
                 child: Form(
                   key: _formKey,
-                  onChanged: () => setState(
-                      () => isValidated = _formKey.currentState!.validate()),
+                  onChanged: () {
+                    setState(() => isValidated =
+                        _formKey.currentState!.validate() &&
+                            countryName != null);
+                  },
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -92,38 +101,47 @@ class _RegFormScreenState extends State<RegFormScreen> {
                         heightSpace(16),
                         GestureDetector(
                           onTap: () => countryPicker(),
-                          child: TextFormField(
-                            controller: _country,
-                            enabled: false,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                    fontWeight: FontWeight.w600, fontSize: 16),
-                            decoration: InputDecoration(
-                              prefixIcon: countryImage.isEmpty
-                                  ? null
-                                  : Image.asset(countryImage),
-                              suffixIcon: const Icon(Icons.arrow_drop_down),
-                              hintText: "Select country",
-                              fillColor: AppColors.formGrey,
-                              filled: true,
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                  borderSide: BorderSide.none),
-                              errorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                  borderSide:
-                                      const BorderSide(color: AppColors.red)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                  borderSide: const BorderSide(
-                                      color: AppColors.textFormBorderGrey)),
-                              focusedErrorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                  borderSide:
-                                      const BorderSide(color: AppColors.red)),
-                            ),
+                          child: Container(
+                            padding: const EdgeInsets.all(12),
+                            width: double.infinity,
+                            height: 60,
+                            decoration: BoxDecoration(
+                                color: AppColors.formGrey,
+                                borderRadius: BorderRadius.circular(16)),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      countryImage.isNotEmpty
+                                          ? SizedBox(
+                                              width: 20,
+                                              height: 20,
+                                              child: Text(countryImage),
+                                            )
+                                          : const SizedBox.shrink(),
+                                      widthSpace(12),
+                                      countryName == null
+                                          ? Text(
+                                              countryName ?? "Select country",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .displayMedium,
+                                            )
+                                          : Text(countryName!,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .displayMedium!
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 16,
+                                                      color: AppColors.primary))
+                                    ],
+                                  ),
+                                  SvgPicture.asset(AppImages.dropdown)
+                                ]),
                           ),
                         ),
                         heightSpace(16),
@@ -144,7 +162,7 @@ class _RegFormScreenState extends State<RegFormScreen> {
                               dynamic result = await _authService.register(
                                   _fullName.text,
                                   _userName.text,
-                                  "NG",
+                                  countryCode!,
                                   widget.email,
                                   _password.text);
 
@@ -156,7 +174,8 @@ class _RegFormScreenState extends State<RegFormScreen> {
                               });
                             }
                           },
-                          isActive: isValidated,
+                          isActive:
+                              countryName != null && isValidated ? true : false,
                           text: "Sign In",
                         ),
                         heightSpace(42.5),
@@ -195,11 +214,9 @@ class _RegFormScreenState extends State<RegFormScreen> {
         onSelect: (Country country) {
           setState(() {
             countryImage = country.flagEmoji;
-            _country.text = country.name;
+            countryName = country.name;
+            countryCode = country.countryCode;
           });
-        }
-        // print('Select country: ${country.displayName}'),
-
-        );
+        });
   }
 }

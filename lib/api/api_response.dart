@@ -12,7 +12,7 @@ class ApiResponse {
         title: response["title"],
         message: response["message"],
         status: response["status"],
-        error: getValue(response["errors"]));
+        error: getValue(response["errors"], response["message"]));
   }
 }
 

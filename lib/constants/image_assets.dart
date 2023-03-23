@@ -9,4 +9,5 @@ class AppImages {
   static const thumbsup = "assets/images/thumbsup.png";
   static const mobilePhone = "assets/images/device.png";
   static const mobilePhone1 = "assets/images/device1.png";
+  static const dropdown = "assets/images/dropdown.svg";
 }
